@@ -2,12 +2,12 @@ name: buildcheck
 on: [push]
 jobs:
   build:
-    if: github.event.repository.owner.login == 'StarRocks'
+    if: github.event.repository.owner.login != 'StarRocks'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-          repository: StarRocks/docs-site
+          repository: titianqx/docs-site
           path: './docstmp'
           ssh-key: ${{ secrets.DOCS_SITE_KEY }}
       - uses: actions/cache@v3
