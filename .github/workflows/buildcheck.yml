@@ -17,14 +17,14 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v2
         with:
           node-version: '14'
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           cd ./docstmp
-          npm install
+          npm install -E
       - name: Extract branch
         id: extract_branch
         run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
@@ -36,6 +36,8 @@ jobs:
           DOC_VERSION: ${{ steps.extract_branch.outputs.branch }}
           DOC_LOCALE: ${{ steps.extract_locale.outputs.locale || 'en-us' }}
         run: |
+          echo "${{env.DOC_VERSION}}"
+          echo "${{env.DOC_LOCALE}}"
           cd ./docstmp
           npm run clone
           npm run build
